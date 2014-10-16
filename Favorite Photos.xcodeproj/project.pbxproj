@@ -9,11 +9,13 @@
 /* Begin PBXBuildFile section */
 		34AC4D3419F05A09005767B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D3319F05A09005767B4 /* main.m */; };
 		34AC4D3719F05A09005767B4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D3619F05A09005767B4 /* AppDelegate.m */; };
-		34AC4D3A19F05A09005767B4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D3919F05A09005767B4 /* ViewController.m */; };
+		34AC4D3A19F05A09005767B4 /* RootPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D3919F05A09005767B4 /* RootPhotosViewController.m */; };
 		34AC4D3D19F05A09005767B4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34AC4D3B19F05A09005767B4 /* Main.storyboard */; };
 		34AC4D3F19F05A09005767B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34AC4D3E19F05A09005767B4 /* Images.xcassets */; };
 		34AC4D4219F05A09005767B4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34AC4D4019F05A09005767B4 /* LaunchScreen.xib */; };
 		34AC4D4E19F05A09005767B4 /* Favorite_PhotosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D4D19F05A09005767B4 /* Favorite_PhotosTests.m */; };
+		34AC4D5919F05D54005767B4 /* PhotosTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D5819F05D54005767B4 /* PhotosTableViewCell.m */; };
+		34AC4D5C19F06AA0005767B4 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D5B19F06AA0005767B4 /* Photo.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +34,18 @@
 		34AC4D3319F05A09005767B4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		34AC4D3519F05A09005767B4 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		34AC4D3619F05A09005767B4 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		34AC4D3819F05A09005767B4 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		34AC4D3919F05A09005767B4 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		34AC4D3819F05A09005767B4 /* RootPhotosViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootPhotosViewController.h; sourceTree = "<group>"; };
+		34AC4D3919F05A09005767B4 /* RootPhotosViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootPhotosViewController.m; sourceTree = "<group>"; };
 		34AC4D3C19F05A09005767B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		34AC4D3E19F05A09005767B4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		34AC4D4119F05A09005767B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		34AC4D4719F05A09005767B4 /* Favorite PhotosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Favorite PhotosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34AC4D4C19F05A09005767B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34AC4D4D19F05A09005767B4 /* Favorite_PhotosTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Favorite_PhotosTests.m; sourceTree = "<group>"; };
+		34AC4D5719F05D54005767B4 /* PhotosTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosTableViewCell.h; sourceTree = "<group>"; };
+		34AC4D5819F05D54005767B4 /* PhotosTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosTableViewCell.m; sourceTree = "<group>"; };
+		34AC4D5A19F06AA0005767B4 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		34AC4D5B19F06AA0005767B4 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +89,12 @@
 			children = (
 				34AC4D3519F05A09005767B4 /* AppDelegate.h */,
 				34AC4D3619F05A09005767B4 /* AppDelegate.m */,
-				34AC4D3819F05A09005767B4 /* ViewController.h */,
-				34AC4D3919F05A09005767B4 /* ViewController.m */,
+				34AC4D3819F05A09005767B4 /* RootPhotosViewController.h */,
+				34AC4D3919F05A09005767B4 /* RootPhotosViewController.m */,
+				34AC4D5719F05D54005767B4 /* PhotosTableViewCell.h */,
+				34AC4D5819F05D54005767B4 /* PhotosTableViewCell.m */,
+				34AC4D5A19F06AA0005767B4 /* Photo.h */,
+				34AC4D5B19F06AA0005767B4 /* Photo.m */,
 				34AC4D3B19F05A09005767B4 /* Main.storyboard */,
 				34AC4D3E19F05A09005767B4 /* Images.xcassets */,
 				34AC4D4019F05A09005767B4 /* LaunchScreen.xib */,
@@ -219,8 +229,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				34AC4D3A19F05A09005767B4 /* ViewController.m in Sources */,
+				34AC4D5919F05D54005767B4 /* PhotosTableViewCell.m in Sources */,
+				34AC4D3A19F05A09005767B4 /* RootPhotosViewController.m in Sources */,
 				34AC4D3719F05A09005767B4 /* AppDelegate.m in Sources */,
+				34AC4D5C19F06AA0005767B4 /* Photo.m in Sources */,
 				34AC4D3419F05A09005767B4 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  PhotosTableViewCell.h
 //  Favorite Photos
 //
 //  Created by Taylor Wright-Sanson on 10/16/14.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface PhotosTableViewCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *photo;
 
 @end
-

@@ -16,9 +16,10 @@
 #import "PhotosTableViewCell.h"
 #import "Photo.h"
 
-@interface RootPhotosViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface RootPhotosViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property NSMutableArray *photos;
 
 @end
@@ -30,17 +31,57 @@
     [super viewDidLoad];
     self.photos = [NSMutableArray array];
 
-    NSString *userSearch = @"cows";
-
-    NSString *instagramApiResponse = [NSString stringWithFormat:@"https://api.instagram.com/v1/tags/%@/media/recent?client_id=%@",userSearch, INSTAGRAM_CLIENT_ID];
-    [self getInstagramData:[NSURL URLWithString:instagramApiResponse]];
+    [self getInstagramDataFromApiUrl:[NSURL URLWithString:[self getApiUrlRequestForSearch:@"circuseverydamnday"]]];
 }
 
+#pragma mark - TableView Delegate Methods
 
-- (void)getInstagramData: (NSURL *)url
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.photos.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    PhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PhotoCell" forIndexPath:indexPath];
+    Photo *photo = [self.photos objectAtIndex:indexPath.row];
+
+    NSURLRequest *request = [NSURLRequest requestWithURL:photo.photoUrl];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * response, NSData * data, NSError * error)
+    {
+           if (!error)
+           {
+               UIImage* image = [[UIImage alloc] initWithData:data];
+               cell.photo.image = image;
+           }
+       }];
+
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 280.0;
+}
+
+#pragma mark - SearchBar Delegate
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self getInstagramDataFromApiUrl:[NSURL URLWithString:[self getApiUrlRequestForSearch:searchBar.text]]];
+}
+
+#pragma mark - Helper Methods
+
+- (NSString *)getApiUrlRequestForSearch: (NSString *)search
+{
+    return [NSString stringWithFormat:@"https://api.instagram.com/v1/tags/%@/media/recent?client_id=%@", search, INSTAGRAM_CLIENT_ID];
+}
+
+- (void)getInstagramDataFromApiUrl: (NSURL *)url
 {
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
-
+    self.photos = [NSMutableArray array];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError)
      {
          NSError *jsonError;
@@ -58,68 +99,20 @@
              //NSLog(@"%@", jsonString);
              NSDictionary *instagramJsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
              NSArray *arrayOfInstagramPosts =  [instagramJsonData objectForKey:@"data"];
-//             // Create a photo object for each dictionary in the json array of dicts.
+             // Create a photo object for each dictionary in the json array of dicts.
              for (NSDictionary *photoJsonDict in arrayOfInstagramPosts)
              {
                  Photo *photo = [[Photo alloc] initWithDictionary:photoJsonDict];
                  [self.photos addObject:photo];
              }
              [self.tableView reloadData];
+             [self.searchBar resignFirstResponder];
          }
          else
          {
              NSLog(@"Instagram data fail");
          }
      }];
-}
-
-#pragma mark - TableView Delegate Methods
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.photos.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    PhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PhotoCell" forIndexPath:indexPath];
-    Photo *photo = [self.photos objectAtIndex:indexPath.row];
-    //NSLog(@"%@", photo.imageUrl);
-    //NSURLRequest *request = [NSURLRequest requestWithURL:photo.imageUrl];
-
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-//        NSData * data = [[[NSData alloc] initWithContentsOfURL:URL] autorelease];
-//
-//        UIImage * img = [UIImage :@"background.jpg"];
-//
-//        // Make a trivial (1x1) graphics context, and draw the image into it
-//        UIGraphicsBeginImageContext(CGSizeMake(1,1));
-//        CGContextRef context = UIGraphicsGetCurrentContext();
-//        CGContextDrawImage(context, CGRectMake(0, 0, 1, 1), [img CGImage]);
-//        UIGraphicsEndImageContext();
-//
-//        // Now the image will have been loaded and decoded and is ready to rock for the main thread
-//        dispatch_sync(dispatch_get_main_queue(), ^{
-//            [[self imageView] setImage: img];
-//        });
-//    });
-    NSURLRequest *request = []
-    cell.photo.image = [UIImage alloc] initWithData:<#(NSData *)#>
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData *imageData = [NSData dataWithContentsOfURL:photo.url];
-        if (imageData) {
-            UIImage *image = [UIImage imageWithData:imageData];
-            if (image) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    cell.photo.image = (id)[tableView cellForRowAtIndexPath:indexPath];
-//                    if (updateCell)
-//                        updateCell.poster.image = image;
-                });
-            }
-        }
-    });
-
-    return cell;
 }
 
 @end

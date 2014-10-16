@@ -16,6 +16,7 @@
 		34AC4D4E19F05A09005767B4 /* Favorite_PhotosTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D4D19F05A09005767B4 /* Favorite_PhotosTests.m */; };
 		34AC4D5919F05D54005767B4 /* PhotosTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D5819F05D54005767B4 /* PhotosTableViewCell.m */; };
 		34AC4D5C19F06AA0005767B4 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D5B19F06AA0005767B4 /* Photo.m */; };
+		34AC4D5E19F0830E005767B4 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34AC4D5D19F0830E005767B4 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		34AC4D5819F05D54005767B4 /* PhotosTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosTableViewCell.m; sourceTree = "<group>"; };
 		34AC4D5A19F06AA0005767B4 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		34AC4D5B19F06AA0005767B4 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		34AC4D5D19F0830E005767B4 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34AC4D5E19F0830E005767B4 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +109,7 @@
 		34AC4D3119F05A09005767B4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				34AC4D5D19F0830E005767B4 /* CoreLocation.framework */,
 				34AC4D3219F05A09005767B4 /* Info.plist */,
 				34AC4D3319F05A09005767B4 /* main.m */,
 			);

@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface Photo : NSObject
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
-@property (readonly) NSURL *url;
+@property (readonly) NSURL *photoUrl;
+@property (readonly) CLLocation *photoLocation;
 
 
 @end

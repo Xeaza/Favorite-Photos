@@ -23,9 +23,16 @@
     return self;
 }
 
-- (NSURL *)url
+- (NSURL *)photoUrl
 {
-    return [NSURL URLWithString:jsonDictionary[@"link"]];
+    return [NSURL URLWithString:jsonDictionary[@"images"][@"standard_resolution"][@"url"]];
+}
+
+- (CLLocation *)photoLocation
+{
+    float latitude = [jsonDictionary[@"location"][@"latitude"] floatValue];
+    float longitude = [jsonDictionary[@"location"][@"longitude"] floatValue];
+    return [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
 }
 
 

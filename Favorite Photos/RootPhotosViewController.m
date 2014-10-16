@@ -103,7 +103,13 @@
              for (NSDictionary *photoJsonDict in arrayOfInstagramPosts)
              {
                  Photo *photo = [[Photo alloc] initWithDictionary:photoJsonDict];
-                 [self.photos addObject:photo];
+
+                 // TODO - Get user's current location so the 10 photos can be the 10 closest photos
+                 if (self.photos.count < 10)
+                 {
+                     [self.photos addObject:photo];
+
+                 }
              }
              [self.tableView reloadData];
              [self.searchBar resignFirstResponder];

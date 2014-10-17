@@ -40,7 +40,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;//self.favoritePhotos.count;
+    return self.favoritePhotos.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -115,11 +115,15 @@
     self.favoritePhotosNames = [NSMutableArray arrayWithContentsOfURL:plist];
     self.favoritePhotos = [NSMutableArray array];
     //NSLog(@"FavNames: %@", self.favoritePhotosNames);
-    for (NSString *imageUrlString in self.favoritePhotosNames) {
+    for (NSString *imageUrlString in self.favoritePhotosNames)
+    {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSData *data = [defaults objectForKey:imageUrlString];
         Photo *photo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        [self.favoritePhotos addObject:photo];
+        if (data)
+        {
+            [self.favoritePhotos addObject:photo];
+        }
         //NSLog(@"Photo ID: %@", photo.photoId);
     }
 

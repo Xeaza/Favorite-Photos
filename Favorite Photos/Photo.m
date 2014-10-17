@@ -23,24 +23,6 @@
     return self;
 }
 
-# pragma mark - NSCoding Protocal Methods 
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if (self = [super init])
-    {
-        jsonDictionary = [aDecoder decodeObjectForKey:@"dict"];
-        //self.author = [aDecoder decodeObjectForKey:@author"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-   [aCoder encodeObject:jsonDictionary forKey:@"dict"];
-//   [aCoder encodeObject:_author forKey:@"author"];
-}
-
 - (NSURL *)photoUrl
 {
     return [NSURL URLWithString:jsonDictionary[@"images"][@"standard_resolution"][@"url"]];
@@ -56,6 +38,22 @@
 - (NSString *)photoId
 {
     return jsonDictionary[@"id"];
+}
+
+# pragma mark - NSCoding Protocal Methods
+// These are used to encode and decode the Photo object so it can be saved in NSUserDefaults
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init])
+    {
+        jsonDictionary = [aDecoder decodeObjectForKey:@"dict"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:jsonDictionary forKey:@"dict"];
 }
 
 @end

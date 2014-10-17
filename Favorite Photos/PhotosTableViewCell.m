@@ -20,12 +20,16 @@
     [super setSelected:selected animated:animated];
    // [self.favoriteButton addTarget:self action:@selector(buttonClickedStopWatch) forControlEvents:UIControlEventTouchUpInside];
 
-
-    // Configure the view for the selected state
 }
-- (IBAction)onFavoriteButtonPressed:(id)sender
+
+- (IBAction)onFavoriteButtonPressed:(UIButton *)button
 {
-    [self.delegate setSelectedImageAsFavorite:self];
+
+    [self.delegate setSelectedImageAsFavorite:self tappedButton:button];
+    /*
+    - (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point;                         // returns nil if point is outside of any row in the table
+    - (NSIndexPath *)indexPathForCell:(UITableViewCell *)cell;                      // returns nil if cell is not visible
+    - (NSArray *)indexPathsForRowsInRect:(CGRect)rect;*/
 }
 
 

@@ -22,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property NSMutableArray *photos;
 @property NSMutableArray *favoritePhotosNames;
+@property NSMutableArray *favoritePhotosIndexPaths;
+
 
 @end
 
@@ -31,6 +33,10 @@
 {
     [super viewDidLoad];
     self.photos = [NSMutableArray array];
+
+    self.favoritePhotosIndexPaths = [[NSMutableArray alloc]init];
+
+
     [self load];
     if (self.favoritePhotosNames == nil)
     {
@@ -52,6 +58,7 @@
     PhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PhotoCell" forIndexPath:indexPath];
     Photo *photo = [self.photos objectAtIndex:indexPath.row];
 
+    BOOL shouldBeChecked = [[self.favoritePhotosIndexPaths objectAtIndex:indexPath.row] boolValue];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:photo.photoUrl];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * response, NSData * data, NSError * error)
@@ -61,7 +68,28 @@
                UIImage* image = [[UIImage alloc] initWithData:data];
                cell.photo.image = image;
                photo.image = image;
-               [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
+               if (shouldBeChecked)
+               {
+                   [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
+               }
+               else
+               {
+                   [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
+               }
+
+               for (NSString *photoName in self.favoritePhotosNames)
+               {
+                   if ([photoName isEqualToString:[NSString stringWithFormat:@"%@.png", photo.photoId]])
+                   {
+                       [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
+                       [self.favoritePhotosIndexPaths insertObject:[NSNumber numberWithBool:YES] atIndex:indexPath.row];
+                       break;
+                   }
+                   else
+                   {
+                       [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
+                   }
+               }
                cell.photo.layer.masksToBounds = YES;
            }
        }];
@@ -135,6 +163,7 @@
                  if (self.photos.count < 10)
                  {
                      [self.photos addObject:photo];
+                     [self.favoritePhotosIndexPaths addObject:[NSNumber numberWithBool:NO]];
                  }
              }
              [self.tableView reloadData];
@@ -147,14 +176,20 @@
      }];
 }
 
-- (void)setSelectedImageAsFavorite: (PhotosTableViewCell *)selectedCell
+- (void)setSelectedImageAsFavorite: (PhotosTableViewCell *)selectedCell tappedButton:(UIButton *)tappedButton
 {
+    // Turn the button that was tapped into a point so that you can get the index of that point in the tableview.
+    CGPoint hitPoint = [tappedButton convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+
     NSData *currentImageData = UIImagePNGRepresentation(selectedCell.favoriteButton.currentBackgroundImage);
     NSData *emptyHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_empty"]);
     //NSData *brokenHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_broken"]);
     NSData *fullHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_full"]);
 
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    BOOL currentValue = [[self.favoritePhotosIndexPaths objectAtIndex:indexPath.row] boolValue];
+    BOOL updatedValue = !currentValue;
+    self.favoritePhotosIndexPaths[indexPath.row] = [NSNumber numberWithBool:updatedValue];
 
     if ([currentImageData isEqual:emptyHeartImageData])
     {
@@ -166,7 +201,6 @@
 
         [self.favoritePhotosNames addObject:[NSString stringWithFormat:@"%@.png", photo.photoId]];
         [self savePhoto:photo];
-
     }
     else if ([currentImageData isEqual:fullHeartImageData])
     {

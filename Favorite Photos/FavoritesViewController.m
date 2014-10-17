@@ -25,14 +25,14 @@
     [super viewDidLoad];
 
     [self load];
-//    if (self.favoritePhotosNames == nil)
-//    {
-//        self.favoritePhotosNames = [NSMutableArray array];
-//    }
-//    if (self.favoritePhotos == nil)
-//    {
-//        self.favoritePhotos = [NSMutableArray array];
-//    }
+    if (self.favoritePhotosNames == nil)
+    {
+        self.favoritePhotosNames = [NSMutableArray array];
+    }
+    if (self.favoritePhotos == nil)
+    {
+        self.favoritePhotos = [NSMutableArray array];
+    }
 
 }
 
@@ -46,10 +46,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PhotoCell" forIndexPath:indexPath];
-    Photo *photo = [self.favoritePhotos objectAtIndex:indexPath.row];
-    NSData *photoData = [NSData data];
-    NSString *photoId = [NSString stringWithFormat:@"%@.png", photo.photoId];
-    NSLog(@"photoid: %@", photoId);
+    Photo *photo;
+    NSData *photoData;
+    NSString *photoId;
+    if (self.favoritePhotos.count)
+    {
+        photo = [self.favoritePhotos objectAtIndex:indexPath.row];
+        photoData = [NSData data];
+        photoId = [NSString stringWithFormat:@"%@.png", photo.photoId];
+    }
+
+    //NSLog(@"photoid: %@", photoId);
     for (NSString *photoUrlName in self.favoritePhotosNames)
     {
         if ([photoUrlName isEqualToString:photoId])
@@ -107,13 +114,13 @@
     NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
     self.favoritePhotosNames = [NSMutableArray arrayWithContentsOfURL:plist];
     self.favoritePhotos = [NSMutableArray array];
-    NSLog(@"FavNames: %@", self.favoritePhotosNames);
+    //NSLog(@"FavNames: %@", self.favoritePhotosNames);
     for (NSString *imageUrlString in self.favoritePhotosNames) {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSData *data = [defaults objectForKey:imageUrlString];
         Photo *photo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         [self.favoritePhotos addObject:photo];
-        NSLog(@"Photo ID: %@", photo.photoId);
+        //NSLog(@"Photo ID: %@", photo.photoId);
     }
 
     //NSLog(@"%@", self.favoritePhotosNames);

@@ -8,28 +8,58 @@
 
 #import "FavoritesViewController.h"
 #import "PhotosTableViewCell.h"
+#import "Photo.h"
 
 @interface FavoritesViewController ()
+
+@property NSMutableArray *favoritePhotos;
+@property NSMutableArray *favoritePhotosNames;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
 @implementation FavoritesViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    [self load];
+//    if (self.favoritePhotosNames == nil)
+//    {
+//        self.favoritePhotosNames = [NSMutableArray array];
+//    }
+//    if (self.favoritePhotos == nil)
+//    {
+//        self.favoritePhotos = [NSMutableArray array];
+//    }
+
 }
 
 #pragma mark - TableView Delegate Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return 1;//self.favoritePhotos.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PhotoCell" forIndexPath:indexPath];
+    Photo *photo = [self.favoritePhotos objectAtIndex:indexPath.row];
+    NSData *photoData = [NSData data];
+    NSString *photoId = [NSString stringWithFormat:@"%@.png", photo.photoId];
+    NSLog(@"photoid: %@", photoId);
+    for (NSString *photoUrlName in self.favoritePhotosNames)
+    {
+        if ([photoUrlName isEqualToString:photoId])
+        {
+            photoData = [NSData dataWithContentsOfFile:[self documentsPathForFileName:photoUrlName]];
+        }
+    }
+
+    cell.photo.image = [UIImage imageWithData:photoData];
+
 //    Photo *photo = [self.photos objectAtIndex:indexPath.row];
 //    cell.delegate = self;
 //    NSURLRequest *request = [NSURLRequest requestWithURL:photo.photoUrl];
@@ -47,19 +77,82 @@
     return cell;
 }
 
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    [self load];
+//    if (self.favoritePhotosNames == nil)
+//    {
+//        self.favoritePhotosNames = [NSMutableArray array];
+//        self.favoritePhotos = [NSMutableArray array];
+//    }
+//    [self.tableView reloadData];
+//}
+
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 280.0;
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - NSUserDefaults
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (NSURL *)documentsDirectory
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *files = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    return  files.firstObject;
 }
-*/
+
+- (void)load
+{
+    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
+    self.favoritePhotosNames = [NSMutableArray arrayWithContentsOfURL:plist];
+    self.favoritePhotos = [NSMutableArray array];
+    NSLog(@"FavNames: %@", self.favoritePhotosNames);
+    for (NSString *imageUrlString in self.favoritePhotosNames) {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSData *data = [defaults objectForKey:imageUrlString];
+        Photo *photo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        [self.favoritePhotos addObject:photo];
+        NSLog(@"Photo ID: %@", photo.photoId);
+    }
+
+    //NSLog(@"%@", self.favoritePhotosNames);
+    //NSData *data = [NSKeyedArchiver archivedDataWithRootObj:obj];
+
+    //Photo *obj = [NSKeyedUnarchiver unarchivedObjectWithData:data];
+}
+
+- (UIImage *)loadImage
+{
+    //NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    //NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
+
+    //self.favoritePhotoUrlNames = [NSMutableArray arrayWithContentsOfURL:photoUrls];
+//832847560751218225_744527078.png
+    //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+
+    //Photo *photo = [self.favoritePhotos objectAtIndex:indexPath.row];
+    //NSData *pngData = [NSData dataWithContentsOfFile:[self documentsPathForFileName:[NSString stringWithFormat:@"%@.png", photo.photoId]]];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *data = [defaults objectForKey:@"PersistenDataKey"];
+    Photo *photo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    //NSObject *object = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+    NSData *pngData = [NSData dataWithContentsOfFile:[self documentsPathForFileName:[NSString stringWithFormat:@"%@.png", photo.photoId]]];
+    //NSLog(@"%@", photo.photoId);
+    return [UIImage imageWithData:pngData];
+}
+
+- (NSString *)documentsPathForFileName:(NSString *)name
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+
+    return [documentsPath stringByAppendingPathComponent:name];
+}
+
+
+
 
 @end

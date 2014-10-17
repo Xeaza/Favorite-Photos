@@ -169,6 +169,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="LEF-2L-Ohu" id="xFI-Ca-1MW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4ZE-ik-pby" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

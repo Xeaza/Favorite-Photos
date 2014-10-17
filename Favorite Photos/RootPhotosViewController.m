@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property NSMutableArray *photos;
+@property NSMutableArray *favoritePhotosNames;
 
 @end
 
@@ -30,6 +31,12 @@
 {
     [super viewDidLoad];
     self.photos = [NSMutableArray array];
+    [self load];
+    if (self.favoritePhotosNames == nil)
+    {
+        self.favoritePhotosNames = [NSMutableArray array];
+    }
+
     [self getInstagramDataFromApiUrl:[NSURL URLWithString:[self getApiUrlRequestForSearch:@"circuseverydamnday"]]];
 }
 
@@ -44,7 +51,8 @@
 {
     PhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PhotoCell" forIndexPath:indexPath];
     Photo *photo = [self.photos objectAtIndex:indexPath.row];
-    cell.delegate = self;
+
+    
     NSURLRequest *request = [NSURLRequest requestWithURL:photo.photoUrl];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * response, NSData * data, NSError * error)
     {
@@ -52,16 +60,29 @@
            {
                UIImage* image = [[UIImage alloc] initWithData:data];
                cell.photo.image = image;
+               photo.image = image;
                [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
                cell.photo.layer.masksToBounds = YES;
            }
        }];
+
+    //NSData *data = [NSData dataWithContentsOfURL:photo.photoUrl];
+    //UIImage* image = [[UIImage alloc] initWithData:data];
+    //photo.image = image;
+
+   // cell.photo.image = photo.image;
+    cell.delegate = self;
 
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //Photo *photo = [self.photos objectAtIndex:indexPath.row];
+    //NSData *data = [NSData dataWithContentsOfURL:photo.photoUrl];
+    //UIImage* image = [[UIImage alloc] initWithData:data];
+    //cell.photo.image = image;
+    //return image.size.height;
     return 280.0;
 }
 
@@ -114,7 +135,6 @@
                  if (self.photos.count < 10)
                  {
                      [self.photos addObject:photo];
-
                  }
              }
              [self.tableView reloadData];
@@ -131,14 +151,22 @@
 {
     NSData *currentImageData = UIImagePNGRepresentation(selectedCell.favoriteButton.currentBackgroundImage);
     NSData *emptyHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_empty"]);
-    NSData *brokenHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_broken"]);
+    //NSData *brokenHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_broken"]);
     NSData *fullHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_full"]);
+
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 
     if ([currentImageData isEqual:emptyHeartImageData])
     {
         [UIView animateWithDuration:0.3 animations:^{
             [selectedCell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
         }];
+        //[self.favoritePhotos addObject:@"Hello"];
+        Photo *photo = [self.photos objectAtIndex:indexPath.row];
+
+        [self.favoritePhotosNames addObject:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+        [self savePhoto:photo];
+
     }
     else if ([currentImageData isEqual:fullHeartImageData])
     {
@@ -146,8 +174,40 @@
             [selectedCell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
         }];
     }
-
-
 }
+
+- (NSURL *)documentsDirectory
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *files = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    return  files.firstObject;
+}
+
+- (void)savePhoto: (Photo *)photo
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+    NSData *imageData = UIImagePNGRepresentation(photo.image);
+    NSURL *imagePath = [[self documentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+
+    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
+    [self.favoritePhotosNames writeToURL:plist atomically:YES];
+
+    NSData *customObjectData = [NSKeyedArchiver archivedDataWithRootObject:photo];
+    [userDefaults setObject:customObjectData forKey:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+
+    //NSURL *imagePath = [[self documentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"image_%f.png", [NSDate timeIntervalSinceReferenceDate]]];
+
+    // Write image data to user's folder
+    [imageData writeToURL:imagePath atomically:YES];
+    [userDefaults synchronize];
+}
+
+- (void)load
+{
+    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
+    self.favoritePhotosNames = [NSMutableArray arrayWithContentsOfURL:plist];
+}
+
 
 @end

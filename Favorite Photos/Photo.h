@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <UIKit/UIKit.h>
 
-@interface Photo : NSObject
+@interface Photo : NSObject <NSCoding>
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
 @property (readonly) NSURL *photoUrl;
 @property (readonly) CLLocation *photoLocation;
-
+@property UIImage *image;
+@property (readonly) NSString *photoId;
 
 @end

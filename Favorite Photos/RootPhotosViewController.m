@@ -16,7 +16,7 @@
 #import "PhotosTableViewCell.h"
 #import "Photo.h"
 
-@interface RootPhotosViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
+@interface RootPhotosViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, PhotoTableViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -30,7 +30,6 @@
 {
     [super viewDidLoad];
     self.photos = [NSMutableArray array];
-
     [self getInstagramDataFromApiUrl:[NSURL URLWithString:[self getApiUrlRequestForSearch:@"circuseverydamnday"]]];
 }
 
@@ -45,7 +44,7 @@
 {
     PhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PhotoCell" forIndexPath:indexPath];
     Photo *photo = [self.photos objectAtIndex:indexPath.row];
-
+    cell.delegate = self;
     NSURLRequest *request = [NSURLRequest requestWithURL:photo.photoUrl];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * response, NSData * data, NSError * error)
     {
@@ -53,6 +52,8 @@
            {
                UIImage* image = [[UIImage alloc] initWithData:data];
                cell.photo.image = image;
+               [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
+               cell.photo.layer.masksToBounds = YES;
            }
        }];
 
@@ -62,6 +63,11 @@
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 280.0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //NSLog(@"%ld", (long)indexPath.row);
 }
 
 #pragma mark - SearchBar Delegate
@@ -119,6 +125,29 @@
              NSLog(@"Instagram data fail");
          }
      }];
+}
+
+- (void)setSelectedImageAsFavorite: (PhotosTableViewCell *)selectedCell
+{
+    NSData *currentImageData = UIImagePNGRepresentation(selectedCell.favoriteButton.currentBackgroundImage);
+    NSData *emptyHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_empty"]);
+    NSData *brokenHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_broken"]);
+    NSData *fullHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_full"]);
+
+    if ([currentImageData isEqual:emptyHeartImageData])
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            [selectedCell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
+        }];
+    }
+    else if ([currentImageData isEqual:fullHeartImageData])
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            [selectedCell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
+        }];
+    }
+
+
 }
 
 @end

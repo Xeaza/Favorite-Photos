@@ -17,6 +17,7 @@
 		34AC4D5919F05D54005767B4 /* PhotosTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D5819F05D54005767B4 /* PhotosTableViewCell.m */; };
 		34AC4D5C19F06AA0005767B4 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D5B19F06AA0005767B4 /* Photo.m */; };
 		34AC4D5E19F0830E005767B4 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34AC4D5D19F0830E005767B4 /* CoreLocation.framework */; };
+		34AC4D6119F0A163005767B4 /* FavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D6019F0A163005767B4 /* FavoritesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,8 @@
 		34AC4D5A19F06AA0005767B4 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		34AC4D5B19F06AA0005767B4 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 		34AC4D5D19F0830E005767B4 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		34AC4D5F19F0A163005767B4 /* FavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesViewController.h; sourceTree = "<group>"; };
+		34AC4D6019F0A163005767B4 /* FavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +99,8 @@
 				34AC4D3919F05A09005767B4 /* RootPhotosViewController.m */,
 				34AC4D5719F05D54005767B4 /* PhotosTableViewCell.h */,
 				34AC4D5819F05D54005767B4 /* PhotosTableViewCell.m */,
+				34AC4D5F19F0A163005767B4 /* FavoritesViewController.h */,
+				34AC4D6019F0A163005767B4 /* FavoritesViewController.m */,
 				34AC4D5A19F06AA0005767B4 /* Photo.h */,
 				34AC4D5B19F06AA0005767B4 /* Photo.m */,
 				34AC4D3B19F05A09005767B4 /* Main.storyboard */,
@@ -235,6 +240,7 @@
 			files = (
 				34AC4D5919F05D54005767B4 /* PhotosTableViewCell.m in Sources */,
 				34AC4D3A19F05A09005767B4 /* RootPhotosViewController.m in Sources */,
+				34AC4D6119F0A163005767B4 /* FavoritesViewController.m in Sources */,
 				34AC4D3719F05A09005767B4 /* AppDelegate.m in Sources */,
 				34AC4D5C19F06AA0005767B4 /* Photo.m in Sources */,
 				34AC4D3419F05A09005767B4 /* main.m in Sources */,

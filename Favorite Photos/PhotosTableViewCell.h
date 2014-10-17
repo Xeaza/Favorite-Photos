@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol PhotoTableViewCellDelegate <NSObject>
+
+- (void)setSelectedImageAsFavorite:(id)selectedCell;
+
+@end
+
 @interface PhotosTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *photo;
+@property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
+
+@property id<PhotoTableViewCellDelegate> delegate;
 
 @end

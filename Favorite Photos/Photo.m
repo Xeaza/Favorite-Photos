@@ -40,6 +40,21 @@
     return jsonDictionary[@"id"];
 }
 
+#pragma mark - MKAnnotation Protocal 
+
+- (CLLocationCoordinate2D)coordinate
+{
+    CLLocationCoordinate2D coordNew;
+    coordNew.latitude  = [jsonDictionary[@"location"][@"latitude"] floatValue];
+    coordNew.longitude = [jsonDictionary[@"location"][@"longitude"] floatValue];
+
+    return coordNew;
+}
+
+- (NSString *)title
+{
+    return jsonDictionary[@"caption"][@"text"];
+}
 # pragma mark - NSCoding Protocal Methods
 // These are used to encode and decode the Photo object so it can be saved in NSUserDefaults
 - (id)initWithCoder:(NSCoder *)aDecoder

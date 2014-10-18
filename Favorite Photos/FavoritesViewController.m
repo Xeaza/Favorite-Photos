@@ -200,7 +200,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSLog(@"Map segue");
+    if ([segue.identifier isEqualToString:@"MapSegue"])
+    {
+        MapViewController *mapViewController = segue.destinationViewController;
+        mapViewController.favoritePhotos = self.favoritePhotos;
+    }
 }
 
 @end

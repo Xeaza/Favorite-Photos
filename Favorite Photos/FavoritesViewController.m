@@ -10,7 +10,7 @@
 #import "PhotosTableViewCell.h"
 #import "Photo.h"
 
-@interface FavoritesViewController ()
+@interface FavoritesViewController () <PhotoTableViewCellDelegate>
 
 @property NSMutableArray *favoritePhotos;
 @property NSMutableArray *favoritePhotosNames;
@@ -23,7 +23,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
     [self load];
     if (self.favoritePhotosNames == nil)
     {
@@ -33,14 +36,34 @@
     {
         self.favoritePhotos = [NSMutableArray array];
     }
-
+    [self.tableView reloadData];
 }
+
 
 #pragma mark - TableView Delegate Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.favoritePhotos.count;
+    if (self.favoritePhotos.count)
+    {
+        return self.favoritePhotos.count;
+    }
+    else
+    {
+        // Display a message when the table is empty
+        UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+
+        messageLabel.text = @"I'm feeling lonely... Where are my favorite photos?";
+        messageLabel.textColor = [UIColor blackColor];
+        messageLabel.numberOfLines = 0;
+        messageLabel.textAlignment = NSTextAlignmentCenter;
+        messageLabel.font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:20];
+        [messageLabel sizeToFit];
+
+        self.tableView.backgroundView = messageLabel;
+    }
+
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -62,6 +85,7 @@
         if ([photoUrlName isEqualToString:photoId])
         {
             photoData = [NSData dataWithContentsOfFile:[self documentsPathForFileName:photoUrlName]];
+            [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
         }
     }
 
@@ -80,24 +104,14 @@
 //             cell.photo.layer.masksToBounds = YES;
 //         }
 //     }];
+    cell.delegate = self;
 
     return cell;
 }
 
-//- (void)viewDidAppear:(BOOL)animated
-//{
-//    [self load];
-//    if (self.favoritePhotosNames == nil)
-//    {
-//        self.favoritePhotosNames = [NSMutableArray array];
-//        self.favoritePhotos = [NSMutableArray array];
-//    }
-//    [self.tableView reloadData];
-//}
-
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 280.0;
+    return 400.0;
 }
 
 #pragma mark - NSUserDefaults
@@ -163,7 +177,62 @@
     return [documentsPath stringByAppendingPathComponent:name];
 }
 
+#pragma mark - Helper Methods
 
+- (void)setSelectedImageAsFavorite: (PhotosTableViewCell *)selectedCell tappedButton:(UIButton *)tappedButton
+{
+    // Turn the button that was tapped into a point so that you can get the index of that point in the tableview.
+    CGPoint hitPoint = [tappedButton convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
 
+    NSData *currentImageData = UIImagePNGRepresentation(selectedCell.favoriteButton.currentBackgroundImage);
+    //NSData *emptyHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_empty"]);
+    //NSData *brokenHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_broken"]);
+    NSData *fullHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_full"]);
+
+    //BOOL currentValue = [[self.favoritePhotosIndexPaths objectAtIndex:indexPath.row] boolValue];
+    //BOOL updatedValue = !currentValue;
+    //self.favoritePhotosIndexPaths[indexPath.row] = [NSNumber numberWithBool:updatedValue];
+
+    if ([currentImageData isEqual:fullHeartImageData])
+    {
+        Photo *photo = [self.favoritePhotos objectAtIndex:indexPath.row];
+        [self.favoritePhotos removeObjectAtIndex:indexPath.row];
+        [self.tableView performSelector:@selector(reloadData) withObject:indexPath afterDelay:0.3];
+
+        [UIView animateWithDuration:0.3 animations:^{
+            [selectedCell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_broken"] forState:UIControlStateNormal];
+        }];
+
+        [self deletePhoto:photo];
+
+    }
+}
+
+- (void)reloadData: (NSIndexPath *)indexPath
+{
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
+
+}
+
+- (void)deletePhoto: (Photo *)photo
+{
+    // Remove the photo being unfavorited from the plist of Photo names
+    [self.favoritePhotosNames removeObject:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
+    [self.favoritePhotosNames writeToURL:plist atomically:YES];
+
+    // Remove the photo with the name photo.photoId.png from the file system
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,   NSUserDomainMask, YES);
+    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager removeItemAtPath:[documentsDirectoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", photo.photoId]] error:nil];
+
+    // Remove image object from user defaults
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObjectForKey:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+}
 
 @end

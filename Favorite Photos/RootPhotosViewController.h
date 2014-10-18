@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RootPhotosViewController : UIViewController
+@interface RootPhotosViewController : UITableViewController
 
 
 @end

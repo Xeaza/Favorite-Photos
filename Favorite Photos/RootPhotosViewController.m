@@ -20,10 +20,11 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property NSString *searchString;
 @property NSMutableArray *photos;
 @property NSMutableArray *favoritePhotosNames;
 @property NSMutableArray *favoritePhotosIndexPaths;
-
+@property(nonatomic, retain) UIRefreshControl *refreshControl;
 
 @end
 
@@ -32,6 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.searchString = @"circuseverydamnday";
     self.photos = [NSMutableArray array];
 
     self.favoritePhotosIndexPaths = [[NSMutableArray alloc]init];
@@ -42,7 +44,15 @@
         self.favoritePhotosNames = [NSMutableArray array];
     }
 
-    [self getInstagramDataFromApiUrl:[NSURL URLWithString:[self getApiUrlRequestForSearch:@"circuseverydamnday"]]];
+    [self getInstagramDataFromApiUrl:[NSURL URLWithString:[self getApiUrlRequestForSearch:self.searchString]]];
+
+    // Initialize the refresh control.
+    self.refreshControl                 = [[UIRefreshControl alloc] init];
+    self.refreshControl.backgroundColor = [UIColor purpleColor];
+    self.refreshControl.tintColor       = [UIColor whiteColor];
+    [self.refreshControl addTarget:self
+                            action:@selector(refresh)
+                  forControlEvents:UIControlEventValueChanged];
 }
 
 #pragma mark - TableView Delegate Methods
@@ -89,7 +99,7 @@
                        [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
                    }
                }
-               cell.photo.layer.masksToBounds = YES;
+               //cell.photo.layer.masksToBounds = YES;
            }
        }];
 
@@ -103,14 +113,9 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //Photo *photo = [self.photos objectAtIndex:indexPath.row];
-    //NSData *data = [NSData dataWithContentsOfURL:photo.photoUrl];
-    //UIImage* image = [[UIImage alloc] initWithData:data];
-    //cell.photo.image = image;
-    //return image.size.height;
-    return 280.0;
+    return 400.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -118,11 +123,32 @@
     //NSLog(@"%ld", (long)indexPath.row);
 }
 
+#pragma mark - Refresh Control
+- (void)refresh
+{
+    [self getInstagramDataFromApiUrl:[NSURL URLWithString:[self getApiUrlRequestForSearch:self.searchString]]];
+
+    // End the refreshing
+    if (self.refreshControl)
+    {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MMM d, h:mm a"];
+        NSString *title = [NSString stringWithFormat:@"Last update: %@", [formatter stringFromDate:[NSDate date]]];
+        NSDictionary *attrsDictionary = [NSDictionary dictionaryWithObject:[UIColor whiteColor]
+                                                                    forKey:NSForegroundColorAttributeName];
+        NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attrsDictionary];
+        self.refreshControl.attributedTitle = attributedTitle;
+
+        [self.refreshControl endRefreshing];
+    }
+}
+
 #pragma mark - SearchBar Delegate
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self getInstagramDataFromApiUrl:[NSURL URLWithString:[self getApiUrlRequestForSearch:searchBar.text]]];
+    self.searchString = searchBar.text;
+    [self getInstagramDataFromApiUrl:[NSURL URLWithString:[self getApiUrlRequestForSearch:self.searchString]]];
 }
 
 #pragma mark - Helper Methods

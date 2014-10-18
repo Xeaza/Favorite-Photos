@@ -9,6 +9,7 @@
 #import "FavoritesViewController.h"
 #import "PhotosTableViewCell.h"
 #import "Photo.h"
+#import "MapViewController.h"
 
 @interface FavoritesViewController () <PhotoTableViewCellDelegate>
 
@@ -79,7 +80,6 @@
         photoId = [NSString stringWithFormat:@"%@.png", photo.photoId];
     }
 
-    //NSLog(@"photoid: %@", photoId);
     for (NSString *photoUrlName in self.favoritePhotosNames)
     {
         if ([photoUrlName isEqualToString:photoId])
@@ -90,20 +90,6 @@
     }
 
     cell.photo.image = [UIImage imageWithData:photoData];
-
-//    Photo *photo = [self.photos objectAtIndex:indexPath.row];
-//    cell.delegate = self;
-//    NSURLRequest *request = [NSURLRequest requestWithURL:photo.photoUrl];
-//    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * response, NSData * data, NSError * error)
-//     {
-//         if (!error)
-//         {
-//             UIImage* image = [[UIImage alloc] initWithData:data];
-//             cell.photo.image = image;
-//             [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
-//             cell.photo.layer.masksToBounds = YES;
-//         }
-//     }];
     cell.delegate = self;
 
     return cell;
@@ -128,7 +114,6 @@
     NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
     self.favoritePhotosNames = [NSMutableArray arrayWithContentsOfURL:plist];
     self.favoritePhotos = [NSMutableArray array];
-    //NSLog(@"FavNames: %@", self.favoritePhotosNames);
     for (NSString *imageUrlString in self.favoritePhotosNames)
     {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -138,34 +123,16 @@
         {
             [self.favoritePhotos addObject:photo];
         }
-        //NSLog(@"Photo ID: %@", photo.photoId);
     }
-
-    //NSLog(@"%@", self.favoritePhotosNames);
-    //NSData *data = [NSKeyedArchiver archivedDataWithRootObj:obj];
-
-    //Photo *obj = [NSKeyedUnarchiver unarchivedObjectWithData:data];
 }
 
 - (UIImage *)loadImage
 {
-    //NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    //NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
-
-    //self.favoritePhotoUrlNames = [NSMutableArray arrayWithContentsOfURL:photoUrls];
-//832847560751218225_744527078.png
-    //NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-
-    //Photo *photo = [self.favoritePhotos objectAtIndex:indexPath.row];
-    //NSData *pngData = [NSData dataWithContentsOfFile:[self documentsPathForFileName:[NSString stringWithFormat:@"%@.png", photo.photoId]]];
-
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSData *data = [defaults objectForKey:@"PersistenDataKey"];
     Photo *photo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    //NSObject *object = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
     NSData *pngData = [NSData dataWithContentsOfFile:[self documentsPathForFileName:[NSString stringWithFormat:@"%@.png", photo.photoId]]];
-    //NSLog(@"%@", photo.photoId);
     return [UIImage imageWithData:pngData];
 }
 
@@ -190,10 +157,6 @@
     //NSData *brokenHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_broken"]);
     NSData *fullHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_full"]);
 
-    //BOOL currentValue = [[self.favoritePhotosIndexPaths objectAtIndex:indexPath.row] boolValue];
-    //BOOL updatedValue = !currentValue;
-    //self.favoritePhotosIndexPaths[indexPath.row] = [NSNumber numberWithBool:updatedValue];
-
     if ([currentImageData isEqual:fullHeartImageData])
     {
         Photo *photo = [self.favoritePhotos objectAtIndex:indexPath.row];
@@ -205,7 +168,6 @@
         }];
 
         [self deletePhoto:photo];
-
     }
 }
 
@@ -214,7 +176,6 @@
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
-
 }
 
 - (void)deletePhoto: (Photo *)photo
@@ -233,6 +194,13 @@
     // Remove image object from user defaults
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObjectForKey:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+}
+
+#pragma mark - 
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSLog(@"Map segue");
 }
 
 @end

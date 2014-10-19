@@ -25,19 +25,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.mapView.delegate = self;
+    //self.mapView.delegate = self;
 
-    CLLocationCoordinate2D coordinate1;
-    coordinate1.latitude = 40.740384;
-    coordinate1.longitude = -73.991146;
-
-    Photo *firstPhoto = self.favoritePhotos.firstObject;
-    self.photoBeingLoaded = firstPhoto;
-    
-    [self.mapView addAnnotation:firstPhoto];
-
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(firstPhoto.coordinate, 0.3*METERS_PER_MILE, 0.3*METERS_PER_MILE);
-    [self.mapView setRegion:viewRegion animated:YES];
+    for (Photo *photo in self.favoritePhotos)
+    {
+        self.photoBeingLoaded = photo;
+        [self.mapView addAnnotation:photo];
+    }
 }
 
 #pragma mark - MKMapViewDelegate Methods
@@ -52,6 +46,7 @@
     MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"MyPinID"];
     //pin.canShowCallout = YES;
     pin.image = [UIImage imageNamed:@"pin"];
+
     //pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 
     return pin;
@@ -62,13 +57,18 @@
     if(![view.annotation isKindOfClass:[MKUserLocation class]])
     {
         FavoritesAnnotationView *calloutView = (FavoritesAnnotationView *)[[[NSBundle mainBundle] loadNibNamed:@"FavoritePhotoAnnotationView" owner:self options:nil] objectAtIndex:0];
+
+        // This array will only ever hold one object, unless I enable users to select multipule annotations
+        NSArray *selectedAnnotaion = [self.mapView selectedAnnotations];
+        Photo *selectedPhotoAnnotation = (Photo *)selectedAnnotaion.firstObject;
+
         // Create an offeset so the image shows up above the pin
         CGRect calloutViewFrame = calloutView.frame;
         // The addition of 6 makes the image centered above the pin
         calloutViewFrame.origin = CGPointMake(-calloutViewFrame.size.width/2 + 6, -calloutViewFrame.size.height);
         calloutView.frame = calloutViewFrame;
 
-        NSData *data = [[NSData alloc] initWithContentsOfURL:self.photoBeingLoaded.photoLowResUrl];
+        NSData *data = [[NSData alloc] initWithContentsOfURL:selectedPhotoAnnotation.photoLowResUrl];
         calloutView.annotationImageView.image = [[UIImage alloc] initWithData:data];
         /* Not sure if I want this to be an asynchronousrequest or not. If it is, the image flashes for a second before staying... hmm
          NSURLRequest *request = [NSURLRequest requestWithURL:self.photoBeingLoaded.photoLowResUrl];
@@ -83,13 +83,18 @@
          */
         [view addSubview:calloutView];
     }
-
 }
 
 -(void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     for (UIView *subview in view.subviews ){
         [subview removeFromSuperview];
     }
+}
+
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView
+{
+    // Map view zooms to annotations and fits all of them in view
+    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
 }
 
 - (IBAction)onCloseButtonPressed:(id)sender

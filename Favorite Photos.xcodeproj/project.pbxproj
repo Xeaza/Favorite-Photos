@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		34511EE719F429C500F8D886 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34511EE619F429C500F8D886 /* Social.framework */; };
+		34511EEA19F465D400F8D886 /* SocialMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 34511EE919F465D400F8D886 /* SocialMethods.m */; };
 		349CF66319F304C500C9FF90 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 349CF66219F304C500C9FF90 /* MapViewController.m */; };
 		34A0FF4619F31FEF00C6DBED /* FavoritePhotoAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34A0FF4519F31FEF00C6DBED /* FavoritePhotoAnnotationView.xib */; };
 		34A0FF4919F320BB00C6DBED /* FavoritesAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A0FF4819F320BB00C6DBED /* FavoritesAnnotationView.m */; };
@@ -37,6 +38,8 @@
 
 /* Begin PBXFileReference section */
 		34511EE619F429C500F8D886 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		34511EE819F465D400F8D886 /* SocialMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialMethods.h; sourceTree = "<group>"; };
+		34511EE919F465D400F8D886 /* SocialMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialMethods.m; sourceTree = "<group>"; };
 		349CF66119F304C500C9FF90 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		349CF66219F304C500C9FF90 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		34A0FF4519F31FEF00C6DBED /* FavoritePhotoAnnotationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoritePhotoAnnotationView.xib; sourceTree = "<group>"; };
@@ -122,6 +125,8 @@
 				34A0FF4519F31FEF00C6DBED /* FavoritePhotoAnnotationView.xib */,
 				34AC4D5A19F06AA0005767B4 /* Photo.h */,
 				34AC4D5B19F06AA0005767B4 /* Photo.m */,
+				34511EE819F465D400F8D886 /* SocialMethods.h */,
+				34511EE919F465D400F8D886 /* SocialMethods.m */,
 				34AC4D3B19F05A09005767B4 /* Main.storyboard */,
 				34AC4D3E19F05A09005767B4 /* Images.xcassets */,
 				34AC4D4019F05A09005767B4 /* LaunchScreen.xib */,
@@ -262,6 +267,7 @@
 			files = (
 				34AC4D5919F05D54005767B4 /* PhotosTableViewCell.m in Sources */,
 				34AC4D3A19F05A09005767B4 /* RootPhotosViewController.m in Sources */,
+				34511EEA19F465D400F8D886 /* SocialMethods.m in Sources */,
 				34AC4D6119F0A163005767B4 /* FavoritesViewController.m in Sources */,
 				34A0FF4919F320BB00C6DBED /* FavoritesAnnotationView.m in Sources */,
 				34AC4D3719F05A09005767B4 /* AppDelegate.m in Sources */,

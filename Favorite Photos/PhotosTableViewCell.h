@@ -12,6 +12,9 @@
 @protocol PhotoTableViewCellDelegate <NSObject>
 
 - (void)setSelectedImageAsFavorite:(id)selectedCell tappedButton:(UIButton *)tappedButton;
+- (void)tweetFavorite: (id)selectedCell;
+- (void)emailFavorite: (id)selectedCell;
+
 
 @end
 

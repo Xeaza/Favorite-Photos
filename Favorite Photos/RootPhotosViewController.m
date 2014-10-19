@@ -16,6 +16,7 @@
 #import "PhotosTableViewCell.h"
 #import "Photo.h"
 #import "FavoritesViewController.h"
+#import "SocialMethods.h"
 
 @interface RootPhotosViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, PhotoTableViewCellDelegate>
 
@@ -324,14 +325,21 @@
     }
 }
 
-- (void)tweetFavorite
-{
+#pragma mark - Social
 
+- (void)tweetFavorite: (PhotosTableViewCell *)selectedCell
+{
+    [SocialMethods tweetFavorite:selectedCell presentingViewController:self];
 }
 
-- (void)emailFavorite
+- (void)emailFavorite: (PhotosTableViewCell *)selectedCell
 {
+    [SocialMethods emailFavorite:selectedCell presentingViewController:self];
+}
 
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - delloc

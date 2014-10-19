@@ -11,8 +11,7 @@
 #import "Photo.h"
 #import "MapViewController.h"
 #import "RootPhotosViewController.h"
-#import <Social/Social.h>
-
+#import "SocialMethods.h"
 @interface FavoritesViewController () <PhotoTableViewCellDelegate, RootPhotosViewControllerDelegate, UIAlertViewDelegate>
 
 @property NSMutableArray *favoritePhotos;
@@ -272,6 +271,25 @@
                                             cancelButtonTitle:@"OK"
                                             otherButtonTitles:nil, nil];
     [alertView show];
+}
+
+#pragma mark - Social
+
+#pragma mark - Social
+
+- (void)tweetFavorite: (PhotosTableViewCell *)selectedCell
+{
+    [SocialMethods tweetFavorite:selectedCell presentingViewController:self];
+}
+
+- (void)emailFavorite: (PhotosTableViewCell *)selectedCell
+{
+    [SocialMethods emailFavorite:selectedCell presentingViewController:self];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - RootViewController Delegate Methods

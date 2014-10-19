@@ -18,28 +18,21 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
-   // [self.favoriteButton addTarget:self action:@selector(buttonClickedStopWatch) forControlEvents:UIControlEventTouchUpInside];
-
 }
 
 - (IBAction)onFavoriteButtonPressed:(UIButton *)button
 {
-
     [self.delegate setSelectedImageAsFavorite:self tappedButton:button];
-    /*
-    - (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point;                         // returns nil if point is outside of any row in the table
-    - (NSIndexPath *)indexPathForCell:(UITableViewCell *)cell;                      // returns nil if cell is not visible
-    - (NSArray *)indexPathsForRowsInRect:(CGRect)rect;*/
 }
 
 - (IBAction)onTweetButtonTapped:(id)sender
 {
-    NSLog(@"Tweet");
+    [self.delegate tweetFavorite:self];
 }
 
 - (IBAction)onEmailButtonTapped:(id)sender
 {
-    NSLog(@"Email");
+    [self.delegate emailFavorite:self];
 }
 
 @end

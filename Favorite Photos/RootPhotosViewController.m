@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property NSString *searchString;
+@property NSString *userString;
 @property NSMutableArray *photos;
 @property NSMutableArray *favoritePhotosNames;
 @property NSMutableArray *favoritePhotosIndexPaths;
@@ -35,6 +36,7 @@
 {
     [super viewDidLoad];
     self.searchString = @"circuseverydamnday";
+    self.userString = @"531719072";
     self.photos = [NSMutableArray array];
 
     self.favoritePhotosIndexPaths = [[NSMutableArray alloc]init];
@@ -156,7 +158,21 @@
 
 - (NSString *)getApiUrlRequestForSearch: (NSString *)search
 {
-    return [NSString stringWithFormat:@"https://api.instagram.com/v1/tags/%@/media/recent?client_id=%@", search, INSTAGRAM_CLIENT_ID];
+    if([search hasPrefix:@"@"])
+    {
+        NSString *cleanSearch = [search stringByReplacingOccurrencesOfString:@"@" withString:@""];
+        return [NSString stringWithFormat:@"https://api.instagram.com/v1/users/%@/media/recent/?client_id=%@", cleanSearch, INSTAGRAM_CLIENT_ID];;
+    }
+    else if ([search hasPrefix:@"#"])
+    {
+        NSString *cleanSearch = [search stringByReplacingOccurrencesOfString:@"#" withString:@""];
+        return [NSString stringWithFormat:@"https://api.instagram.com/v1/tags/%@/media/recent?client_id=%@", cleanSearch, INSTAGRAM_CLIENT_ID];
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"https://api.instagram.com/v1/tags/%@/media/recent?client_id=%@", search, INSTAGRAM_CLIENT_ID];
+    }
+
 }
 
 - (void)getInstagramDataFromApiUrl: (NSURL *)url

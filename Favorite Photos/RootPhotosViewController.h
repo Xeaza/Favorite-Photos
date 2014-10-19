@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol RootPhotosViewControllerDelegate <NSObject>
+
+- (void)amIComingBackFromSearchPhotosViewController: (BOOL)comingBackFromSearchPhotos;
+
+@end
+
 @interface RootPhotosViewController : UITableViewController
 
+@property id<RootPhotosViewControllerDelegate> delegate;
 
 @end
 

@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		349CF66319F304C500C9FF90 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 349CF66219F304C500C9FF90 /* MapViewController.m */; };
-		349CF66519F304E900C9FF90 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349CF66419F304E900C9FF90 /* MapKit.framework */; };
+		34A0FF4619F31FEF00C6DBED /* FavoritePhotoAnnotationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34A0FF4519F31FEF00C6DBED /* FavoritePhotoAnnotationView.xib */; };
+		34A0FF4919F320BB00C6DBED /* FavoritesAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 34A0FF4819F320BB00C6DBED /* FavoritesAnnotationView.m */; };
 		34AC4D3419F05A09005767B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D3319F05A09005767B4 /* main.m */; };
 		34AC4D3719F05A09005767B4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D3619F05A09005767B4 /* AppDelegate.m */; };
 		34AC4D3A19F05A09005767B4 /* RootPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D3919F05A09005767B4 /* RootPhotosViewController.m */; };
@@ -20,6 +21,7 @@
 		34AC4D5C19F06AA0005767B4 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D5B19F06AA0005767B4 /* Photo.m */; };
 		34AC4D5E19F0830E005767B4 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34AC4D5D19F0830E005767B4 /* CoreLocation.framework */; };
 		34AC4D6119F0A163005767B4 /* FavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34AC4D6019F0A163005767B4 /* FavoritesViewController.m */; };
+		34B165C219F33122001C3065 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B165C119F33122001C3065 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +37,9 @@
 /* Begin PBXFileReference section */
 		349CF66119F304C500C9FF90 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		349CF66219F304C500C9FF90 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
-		349CF66419F304E900C9FF90 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		34A0FF4519F31FEF00C6DBED /* FavoritePhotoAnnotationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoritePhotoAnnotationView.xib; sourceTree = "<group>"; };
+		34A0FF4719F320BB00C6DBED /* FavoritesAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesAnnotationView.h; sourceTree = "<group>"; };
+		34A0FF4819F320BB00C6DBED /* FavoritesAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesAnnotationView.m; sourceTree = "<group>"; };
 		34AC4D2E19F05A09005767B4 /* Favorite Photos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Favorite Photos.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34AC4D3219F05A09005767B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34AC4D3319F05A09005767B4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -56,6 +60,7 @@
 		34AC4D5D19F0830E005767B4 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		34AC4D5F19F0A163005767B4 /* FavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesViewController.h; sourceTree = "<group>"; };
 		34AC4D6019F0A163005767B4 /* FavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesViewController.m; sourceTree = "<group>"; };
+		34B165C119F33122001C3065 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				349CF66519F304E900C9FF90 /* MapKit.framework in Frameworks */,
+				34B165C219F33122001C3065 /* MapKit.framework in Frameworks */,
 				34AC4D5E19F0830E005767B4 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,6 +114,9 @@
 				34AC4D6019F0A163005767B4 /* FavoritesViewController.m */,
 				349CF66119F304C500C9FF90 /* MapViewController.h */,
 				349CF66219F304C500C9FF90 /* MapViewController.m */,
+				34A0FF4719F320BB00C6DBED /* FavoritesAnnotationView.h */,
+				34A0FF4819F320BB00C6DBED /* FavoritesAnnotationView.m */,
+				34A0FF4519F31FEF00C6DBED /* FavoritePhotoAnnotationView.xib */,
 				34AC4D5A19F06AA0005767B4 /* Photo.h */,
 				34AC4D5B19F06AA0005767B4 /* Photo.m */,
 				34AC4D3B19F05A09005767B4 /* Main.storyboard */,
@@ -122,7 +130,7 @@
 		34AC4D3119F05A09005767B4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				349CF66419F304E900C9FF90 /* MapKit.framework */,
+				34B165C119F33122001C3065 /* MapKit.framework */,
 				34AC4D5D19F0830E005767B4 /* CoreLocation.framework */,
 				34AC4D3219F05A09005767B4 /* Info.plist */,
 				34AC4D3319F05A09005767B4 /* main.m */,
@@ -227,6 +235,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34A0FF4619F31FEF00C6DBED /* FavoritePhotoAnnotationView.xib in Resources */,
 				34AC4D3D19F05A09005767B4 /* Main.storyboard in Resources */,
 				34AC4D4219F05A09005767B4 /* LaunchScreen.xib in Resources */,
 				34AC4D3F19F05A09005767B4 /* Images.xcassets in Resources */,
@@ -250,6 +259,7 @@
 				34AC4D5919F05D54005767B4 /* PhotosTableViewCell.m in Sources */,
 				34AC4D3A19F05A09005767B4 /* RootPhotosViewController.m in Sources */,
 				34AC4D6119F0A163005767B4 /* FavoritesViewController.m in Sources */,
+				34A0FF4919F320BB00C6DBED /* FavoritesAnnotationView.m in Sources */,
 				34AC4D3719F05A09005767B4 /* AppDelegate.m in Sources */,
 				34AC4D5C19F06AA0005767B4 /* Photo.m in Sources */,
 				34AC4D3419F05A09005767B4 /* main.m in Sources */,
@@ -376,6 +386,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Favorite Photos/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -386,6 +397,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Favorite Photos/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -404,6 +416,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Favorite PhotosTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Favorite Photos.app/Favorite Photos";
@@ -419,6 +432,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Favorite PhotosTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Favorite Photos.app/Favorite Photos";

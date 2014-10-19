@@ -15,6 +15,7 @@
 #import "RootPhotosViewController.h"
 #import "PhotosTableViewCell.h"
 #import "Photo.h"
+#import "FavoritesViewController.h"
 
 @interface RootPhotosViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, PhotoTableViewCellDelegate>
 
@@ -284,6 +285,12 @@
 {
     NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
     self.favoritePhotosNames = [NSMutableArray arrayWithContentsOfURL:plist];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [self.delegate amIComingBackFromSearchPhotosViewController:YES];
+    self.delegate = nil;
 }
 
 

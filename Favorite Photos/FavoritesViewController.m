@@ -10,8 +10,9 @@
 #import "PhotosTableViewCell.h"
 #import "Photo.h"
 #import "MapViewController.h"
+#import "RootPhotosViewController.h"
 
-@interface FavoritesViewController () <PhotoTableViewCellDelegate>
+@interface FavoritesViewController () <PhotoTableViewCellDelegate, RootPhotosViewControllerDelegate>
 
 @property NSMutableArray *favoritePhotos;
 @property NSMutableArray *favoritePhotosNames;
@@ -24,9 +25,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+   // NSLog(@"Documents Directory: %@", [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
+    [self initlizeArraysAndLoadFavorites];
 }
 
 - (void)viewDidAppear:(BOOL)animated
+{
+    if (self.didComeFromSearchingPhotosView)
+    {
+        [self initlizeArraysAndLoadFavorites];
+    }
+    //NSLog(self.didComeFromSearchingPhotosView ? @"Yes" : @"No");
+}
+
+- (void)initlizeArraysAndLoadFavorites
 {
     [self load];
     if (self.favoritePhotosNames == nil)
@@ -38,6 +51,7 @@
         self.favoritePhotos = [NSMutableArray array];
     }
     [self.tableView reloadData];
+    self.didComeFromSearchingPhotosView = NO;
 }
 
 
@@ -160,14 +174,15 @@
     if ([currentImageData isEqual:fullHeartImageData])
     {
         Photo *photo = [self.favoritePhotos objectAtIndex:indexPath.row];
+        [self deletePhoto:photo];
         [self.favoritePhotos removeObjectAtIndex:indexPath.row];
+        NSLog(@"%@", photo);
+        NSLog(@"%ld", (long)indexPath.row);
         [self.tableView performSelector:@selector(reloadData) withObject:indexPath afterDelay:0.3];
 
         [UIView animateWithDuration:0.3 animations:^{
             [selectedCell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_broken"] forState:UIControlStateNormal];
         }];
-
-        [self deletePhoto:photo];
     }
 }
 
@@ -194,9 +209,10 @@
     // Remove image object from user defaults
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObjectForKey:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+    [userDefaults synchronize];
 }
 
-#pragma mark - 
+#pragma mark - Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -205,6 +221,18 @@
         MapViewController *mapViewController = segue.destinationViewController;
         mapViewController.favoritePhotos = self.favoritePhotos;
     }
+    else if ([segue.identifier isEqualToString:@"SearchSegue"])
+    {
+        RootPhotosViewController *rootViewController = segue.destinationViewController;
+        rootViewController.delegate = self;
+    }
+}
+
+#pragma mark - RootViewController Delegate Methods
+
+- (void)amIComingBackFromSearchPhotosViewController: (BOOL)comingBackFromSearchPhotos
+{
+    self.didComeFromSearchingPhotosView = comingBackFromSearchPhotos;
 }
 
 @end

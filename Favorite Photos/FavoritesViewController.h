@@ -10,4 +10,6 @@
 
 @interface FavoritesViewController : UIViewController
 
+@property BOOL didComeFromSearchingPhotosView;
+
 @end

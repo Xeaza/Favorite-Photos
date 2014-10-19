@@ -16,6 +16,7 @@
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
 @property (readonly) NSURL *photoUrl;
+@property (readonly) NSURL *photoLowResUrl;
 @property (readonly) CLLocation *photoLocation;
 @property (readonly) NSString *photoId;
 

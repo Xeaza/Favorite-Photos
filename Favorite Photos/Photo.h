@@ -17,8 +17,10 @@
 
 @property (readonly) NSURL *photoUrl;
 @property (readonly) NSURL *photoLowResUrl;
+@property (readonly) NSURL *thumbnail;
 @property (readonly) CLLocation *photoLocation;
 @property (readonly) NSString *photoId;
+@property (readonly) BOOL photoHasLocationData;
 
 @property UIImage *image;
 

@@ -12,7 +12,7 @@
 #import "MapViewController.h"
 #import "RootPhotosViewController.h"
 
-@interface FavoritesViewController () <PhotoTableViewCellDelegate, RootPhotosViewControllerDelegate>
+@interface FavoritesViewController () <PhotoTableViewCellDelegate, RootPhotosViewControllerDelegate, UIAlertViewDelegate>
 
 @property NSMutableArray *favoritePhotos;
 @property NSMutableArray *favoritePhotosNames;
@@ -176,8 +176,6 @@
         Photo *photo = [self.favoritePhotos objectAtIndex:indexPath.row];
         [self deletePhoto:photo];
         [self.favoritePhotos removeObjectAtIndex:indexPath.row];
-        NSLog(@"%@", photo);
-        NSLog(@"%ld", (long)indexPath.row);
         [self.tableView performSelector:@selector(reloadData) withObject:indexPath afterDelay:0.3];
 
         [UIView animateWithDuration:0.3 animations:^{
@@ -226,6 +224,51 @@
         RootPhotosViewController *rootViewController = segue.destinationViewController;
         rootViewController.delegate = self;
     }
+}
+
+-(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    if([identifier isEqualToString:@"MapSegue"])
+    {
+        if ([self areThereAnyPhotosWithLocation])
+        {
+            return YES;
+        }
+    }
+    else if ([identifier isEqualToString:@"SearchSegue"])
+    {
+        return YES;
+    }
+    [self tellUserTheyCantGoToMapsWithoutSelectingImagesWithLocationData];
+    return NO;
+}
+
+- (BOOL)areThereAnyPhotosWithLocation
+{
+    BOOL areThereAnyPhotosWithLocationData = NO;
+    for (Photo *photo in self.favoritePhotos)
+    {
+        if (photo.photoHasLocationData)
+        {
+            areThereAnyPhotosWithLocationData = YES;
+        }
+        else
+        {
+            areThereAnyPhotosWithLocationData = NO;
+        }
+    }
+
+    return areThereAnyPhotosWithLocationData;
+}
+
+- (void)tellUserTheyCantGoToMapsWithoutSelectingImagesWithLocationData
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Aww shucks!"
+                                                       message:@"None of your favorite photos have any location data shared so we can't show them to you on a map... :("
+                                                     delegate:self
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:nil, nil];
+    [alertView show];
 }
 
 #pragma mark - RootViewController Delegate Methods

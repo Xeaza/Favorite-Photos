@@ -33,11 +33,25 @@
     return [NSURL URLWithString:jsonDictionary[@"images"][@"low_resolution"][@"url"]];
 }
 
+- (NSURL *)thumbnail
+{
+    return [NSURL URLWithString:jsonDictionary[@"images"][@"thumbnail"][@"url"]];
+}
+
+- (BOOL)photoHasLocationData
+{
+    if (jsonDictionary[@"location"] != [NSNull null])
+    {
+        return YES;
+    }
+    return NO;
+}
+
 - (CLLocation *)photoLocation
 {
     float latitude;
     float longitude;
-    if (jsonDictionary[@"location"] != [NSNull null])
+    if (self.photoHasLocationData)
     {
         latitude = [jsonDictionary[@"location"][@"latitude"] floatValue];
         longitude = [jsonDictionary[@"location"][@"longitude"] floatValue];
@@ -56,7 +70,7 @@
 {
     CLLocationCoordinate2D coordNew;
 
-    if (jsonDictionary[@"location"] != [NSNull null])
+    if (self.photoHasLocationData)
     {
         coordNew.latitude  = [jsonDictionary[@"location"][@"latitude"] floatValue];
         coordNew.longitude = [jsonDictionary[@"location"][@"longitude"] floatValue];

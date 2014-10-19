@@ -25,13 +25,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //self.mapView.delegate = self;
 
     for (Photo *photo in self.favoritePhotos)
     {
         self.photoBeingLoaded = photo;
         [self.mapView addAnnotation:photo];
     }
+
+    // Map view zooms to annotations and fits all of them in view
+    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
 }
 
 #pragma mark - MKMapViewDelegate Methods
@@ -44,13 +46,36 @@
     }
 
     MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"MyPinID"];
-    //pin.canShowCallout = YES;
     pin.image = [UIImage imageNamed:@"pin"];
 
-    //pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    // this would be cool to have so that the user could see photos as pins.
+    // Then, ideally when a pin is tapped the pin's image would be set to a pin
+    // And it's annotationView would show the image. Right now it is set so that all pins
+    // show up as pins and then the annotation view shows on press. Which is the only time you
+    // can see the image...
+    /*Photo *selectedPhotoAnnotation = (Photo *)annotation;
+    NSData *data = [[NSData alloc] initWithContentsOfURL:selectedPhotoAnnotation.thumbnail];
+    UIImage *resizedImage = [[UIImage alloc] initWithData:data];
+    UIImage *image = [self imageWithImage:resizedImage scaledToSize:CGSizeMake(20, 20)];
+    pin.image = image; */
 
+    //pin.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
     return pin;
 }
+
+// This is a cool method that is passed an image and scales it down
+/*
+- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize
+{
+    //UIGraphicsBeginImageContext(newSize);
+    // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
+    // Pass 1.0 to force exact pixel size.
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+} */
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
@@ -70,6 +95,8 @@
 
         NSData *data = [[NSData alloc] initWithContentsOfURL:selectedPhotoAnnotation.photoLowResUrl];
         calloutView.annotationImageView.image = [[UIImage alloc] initWithData:data];
+
+        [self.mapView reloadInputViews];
         /* Not sure if I want this to be an asynchronousrequest or not. If it is, the image flashes for a second before staying... hmm
          NSURLRequest *request = [NSURLRequest requestWithURL:self.photoBeingLoaded.photoLowResUrl];
 
@@ -89,12 +116,6 @@
     for (UIView *subview in view.subviews ){
         [subview removeFromSuperview];
     }
-}
-
-- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView
-{
-    // Map view zooms to annotations and fits all of them in view
-    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
 }
 
 - (IBAction)onCloseButtonPressed:(id)sender

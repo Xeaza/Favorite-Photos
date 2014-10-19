@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Photo.h"
 
 @protocol PhotoTableViewCellDelegate <NSObject>
 
@@ -20,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 @property (weak, nonatomic) IBOutlet UIButton *tweetButton;
 @property (weak, nonatomic) IBOutlet UIButton *emailButton;
+@property Photo *instagramPost;
 
 @property id<PhotoTableViewCellDelegate> delegate;
 

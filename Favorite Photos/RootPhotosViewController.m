@@ -68,18 +68,21 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PhotoCell" forIndexPath:indexPath];
-    Photo *photo = [self.photos objectAtIndex:indexPath.row];
+    //Photo *photo = [self.photos objectAtIndex:indexPath.row];
+    cell.instagramPost = [self.photos objectAtIndex:indexPath.row];;
 
     BOOL shouldBeChecked = [[self.favoritePhotosIndexPaths objectAtIndex:indexPath.row] boolValue];
 
-    NSURLRequest *request = [NSURLRequest requestWithURL:photo.photoUrl];
+    NSURLRequest *request = [NSURLRequest requestWithURL:cell.instagramPost.photoUrl];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse * response, NSData * data, NSError * error)
     {
            if (!error)
            {
                UIImage* image = [[UIImage alloc] initWithData:data];
-               cell.photo.image = image;
-               photo.image = image;
+               cell.instagramPost.image = image;
+               cell.photo.image = cell.instagramPost.image;
+
+               //photo.image = image;
                if (shouldBeChecked)
                {
                    [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
@@ -95,7 +98,7 @@
 
                for (NSString *photoName in self.favoritePhotosNames)
                {
-                   if ([photoName isEqualToString:[NSString stringWithFormat:@"%@.png", photo.photoId]])
+                   if ([photoName isEqualToString:[NSString stringWithFormat:@"%@.png", cell.instagramPost.photoId]])
                    {
                        [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
                        cell.tweetButton.hidden = NO;
@@ -162,7 +165,7 @@
     [self getInstagramDataFromApiUrl:[NSURL URLWithString:[self getApiUrlRequestForSearch:self.searchString]]];
 }
 
-#pragma mark - Helper Methods
+#pragma mark - Requesting Instagram Data Methods
 
 - (NSString *)getApiUrlRequestForSearch: (NSString *)search
 {
@@ -225,6 +228,8 @@
      }];
 }
 
+#pragma mark - Saving User Defaults and Documents Directory
+
 - (NSURL *)documentsDirectory
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -279,8 +284,9 @@
 - (void)setSelectedImageAsFavorite: (PhotosTableViewCell *)selectedCell tappedButton:(UIButton *)tappedButton
 {
     // Turn the button that was tapped into a point so that you can get the index of that point in the tableview.
-    CGPoint hitPoint = [tappedButton convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+    //CGPoint hitPoint = [tappedButton convertPoint:CGPointZero toView:self.tableView];
+    //NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:selectedCell];
 
     NSData *currentImageData = UIImagePNGRepresentation(selectedCell.favoriteButton.currentBackgroundImage);
     NSData *emptyHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_empty"]);

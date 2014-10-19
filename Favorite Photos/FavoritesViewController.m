@@ -85,6 +85,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PhotosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PhotoCell" forIndexPath:indexPath];
+    // TODO - Try using the instagramPost here instead of creating a photo and on line 95 getting it from the array of photos.
+    // might not need to do that. Might be able to use the cell's instagram post property
     Photo *photo;
     NSData *photoData;
     NSString *photoId;

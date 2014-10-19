@@ -2,13 +2,14 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="UVE-io-IfI">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Root Photos View Controller-->
         <scene sceneID="0ir-Pb-qND">
             <objects>
                 <tableViewController id="dEa-fk-3U8" customClass="RootPhotosViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="p5c-eb-twj">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="398" sectionHeaderHeight="22" sectionFooterHeight="22" id="p5c-eb-twj">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -21,20 +22,46 @@
                             </connections>
                         </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PhotoCell" rowHeight="441" id="Y84-cK-xDX" customClass="PhotosTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PhotoCell" rowHeight="398" id="Y84-cK-xDX" customClass="PhotosTableViewCell">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y84-cK-xDX" id="urv-05-wTq">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cfa-fo-a8s">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="399.5"/>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czx-aC-Prl">
-                                            <rect key="frame" x="562" y="364" width="30" height="30"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sx3-UD-SFN">
+                                            <rect key="frame" x="6" y="354" width="44" height="36"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="30" id="g9J-jZ-FCN"/>
-                                                <constraint firstAttribute="height" constant="30" id="odo-EX-ud4"/>
+                                                <constraint firstAttribute="width" constant="44" id="iVi-9C-x5Z"/>
+                                                <constraint firstAttribute="height" constant="36" id="inn-xO-V4x"/>
+                                            </constraints>
+                                            <state key="normal" backgroundImage="twitter">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onTweetButtonTapped:" destination="Y84-cK-xDX" eventType="touchUpInside" id="A2Y-00-l7H"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hFc-8q-8ml">
+                                            <rect key="frame" x="64" y="357" width="44" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="RFl-7W-bmy"/>
+                                                <constraint firstAttribute="width" constant="44" id="rMa-xd-ecc"/>
+                                            </constraints>
+                                            <state key="normal" backgroundImage="mail">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onEmailButtonTapped:" destination="Y84-cK-xDX" eventType="touchUpInside" id="qGR-pT-h82"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czx-aC-Prl">
+                                            <rect key="frame" x="562" y="363" width="30" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="30" id="SZf-ld-ELH"/>
+                                                <constraint firstAttribute="height" constant="30" id="YUi-7w-dZi"/>
                                             </constraints>
                                             <state key="normal">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -46,17 +73,23 @@
                                     </subviews>
                                     <color key="backgroundColor" red="0.0" green="0.12826378860000001" blue="0.15227900550000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
-                                        <constraint firstItem="czx-aC-Prl" firstAttribute="top" secondItem="Cfa-fo-a8s" secondAttribute="bottom" constant="-36" id="3I9-hU-fKc"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="sx3-UD-SFN" secondAttribute="bottom" constant="-0.5" id="3A0-dK-VKk"/>
                                         <constraint firstItem="Cfa-fo-a8s" firstAttribute="top" secondItem="urv-05-wTq" secondAttribute="top" id="EbU-86-NHz"/>
                                         <constraint firstItem="Cfa-fo-a8s" firstAttribute="leading" secondItem="urv-05-wTq" secondAttribute="leading" id="Ifq-Ey-c8g"/>
                                         <constraint firstAttribute="trailing" secondItem="Cfa-fo-a8s" secondAttribute="trailing" id="O0L-C9-QR6"/>
-                                        <constraint firstItem="czx-aC-Prl" firstAttribute="leading" secondItem="Cfa-fo-a8s" secondAttribute="trailing" constant="-38" id="RK1-kV-KDH"/>
-                                        <constraint firstAttribute="bottom" secondItem="Cfa-fo-a8s" secondAttribute="bottom" constant="40.5" id="eUk-dM-Ev2"/>
+                                        <constraint firstItem="czx-aC-Prl" firstAttribute="trailing" secondItem="urv-05-wTq" secondAttribute="trailingMargin" id="VGC-Dc-LS3"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="hFc-8q-8ml" secondAttribute="bottom" constant="2.5" id="Z9y-G5-jvK"/>
+                                        <constraint firstItem="hFc-8q-8ml" firstAttribute="leading" secondItem="sx3-UD-SFN" secondAttribute="trailing" constant="14" id="aAX-Wx-w9j"/>
+                                        <constraint firstItem="sx3-UD-SFN" firstAttribute="leading" secondItem="urv-05-wTq" secondAttribute="leadingMargin" constant="-2" id="cGi-80-idF"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="czx-aC-Prl" secondAttribute="bottom" constant="-3.5" id="dKZ-Jw-Koz"/>
+                                        <constraint firstAttribute="bottom" secondItem="Cfa-fo-a8s" secondAttribute="bottom" constant="-2" id="eUk-dM-Ev2"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="emailButton" destination="hFc-8q-8ml" id="dE0-MY-Cyj"/>
                                     <outlet property="favoriteButton" destination="czx-aC-Prl" id="RUI-Fv-OS8"/>
                                     <outlet property="photo" destination="Cfa-fo-a8s" id="BIb-Cg-rT9"/>
+                                    <outlet property="tweetButton" destination="sx3-UD-SFN" id="irx-cU-7JU"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -153,11 +186,37 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5wq-pE-niw">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="399.5"/>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fXG-7W-075">
+                                                    <rect key="frame" x="7" y="353" width="44" height="36"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="36" id="Lr8-Qr-s1K"/>
+                                                        <constraint firstAttribute="width" constant="44" id="PTh-Y1-b0P"/>
+                                                    </constraints>
+                                                    <state key="normal" backgroundImage="twitter">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="onTweetButtonTapped:" destination="a4s-SS-OEb" eventType="touchUpInside" id="re3-Xs-ShY"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OsF-eb-84j">
+                                                    <rect key="frame" x="65" y="356" width="44" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="ONH-vf-mYm"/>
+                                                        <constraint firstAttribute="width" constant="44" id="nFM-29-sXD"/>
+                                                    </constraints>
+                                                    <state key="normal" backgroundImage="mail">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="onEmailButtonTapped:" destination="a4s-SS-OEb" eventType="touchUpInside" id="1b7-5B-1Lz"/>
+                                                    </connections>
+                                                </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hEZ-Zw-VQe">
                                                     <rect key="frame" x="557" y="356" width="30" height="30"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="6Lr-21-7z4"/>
-                                                        <constraint firstAttribute="width" constant="30" id="KuC-ZL-yfd"/>
+                                                        <constraint firstAttribute="width" constant="30" id="7mA-jT-zhf"/>
+                                                        <constraint firstAttribute="height" constant="30" id="eCM-v9-a0H"/>
                                                     </constraints>
                                                     <state key="normal">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -169,18 +228,22 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="5wq-pE-niw" secondAttribute="bottom" id="0te-zz-cIM"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="fXG-7W-075" secondAttribute="bottom" constant="3" id="2kJ-Bz-NlS"/>
                                                 <constraint firstAttribute="trailing" secondItem="5wq-pE-niw" secondAttribute="trailing" id="6Vb-3k-AAX"/>
-                                                <constraint firstItem="hEZ-Zw-VQe" firstAttribute="top" secondItem="5wq-pE-niw" secondAttribute="bottom" constant="-43.5" id="Oq5-N0-c8e"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="OsF-eb-84j" secondAttribute="bottom" constant="6" id="DwN-LW-ctw"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="hEZ-Zw-VQe" secondAttribute="bottom" constant="6" id="Pfn-tS-FQQ"/>
                                                 <constraint firstItem="5wq-pE-niw" firstAttribute="leading" secondItem="yWY-0D-FKI" secondAttribute="leading" id="SWw-gH-Soq"/>
                                                 <constraint firstItem="5wq-pE-niw" firstAttribute="top" secondItem="yWY-0D-FKI" secondAttribute="top" id="Xwx-BH-zBG"/>
-                                                <constraint firstItem="hEZ-Zw-VQe" firstAttribute="leading" secondItem="5wq-pE-niw" secondAttribute="trailing" constant="-43" id="udL-cl-Fyh">
-                                                    <variation key="widthClass=compact" constant="-45"/>
-                                                </constraint>
+                                                <constraint firstItem="OsF-eb-84j" firstAttribute="leading" secondItem="fXG-7W-075" secondAttribute="trailing" constant="14" id="jWu-Dc-VAD"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="hEZ-Zw-VQe" secondAttribute="trailing" constant="5" id="k5Z-kC-Wkn"/>
+                                                <constraint firstItem="fXG-7W-075" firstAttribute="leading" secondItem="yWY-0D-FKI" secondAttribute="leadingMargin" constant="-1" id="lKH-nv-1ln"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="emailButton" destination="OsF-eb-84j" id="Sht-08-jOD"/>
                                             <outlet property="favoriteButton" destination="hEZ-Zw-VQe" id="em5-Lx-SLS"/>
                                             <outlet property="photo" destination="5wq-pE-niw" id="VaW-0w-huu"/>
+                                            <outlet property="tweetButton" destination="fXG-7W-075" id="Bqa-i6-JsY"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -240,7 +303,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="mail" width="43" height="35"/>
         <image name="map" width="16" height="16"/>
         <image name="menu" width="16" height="16"/>
+        <image name="twitter" width="44" height="36"/>
     </resources>
 </document>

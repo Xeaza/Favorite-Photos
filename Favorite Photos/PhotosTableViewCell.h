@@ -18,6 +18,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *photo;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
+@property (weak, nonatomic) IBOutlet UIButton *tweetButton;
+@property (weak, nonatomic) IBOutlet UIButton *emailButton;
 
 @property id<PhotoTableViewCellDelegate> delegate;
 

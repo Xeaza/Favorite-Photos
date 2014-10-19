@@ -83,10 +83,14 @@
                if (shouldBeChecked)
                {
                    [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
+                   cell.tweetButton.hidden = NO;
+                   cell.emailButton.hidden = NO;
                }
                else
                {
                    [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
+                   cell.tweetButton.hidden = YES;
+                   cell.emailButton.hidden = YES;
                }
 
                for (NSString *photoName in self.favoritePhotosNames)
@@ -94,12 +98,16 @@
                    if ([photoName isEqualToString:[NSString stringWithFormat:@"%@.png", photo.photoId]])
                    {
                        [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
+                       cell.tweetButton.hidden = NO;
+                       cell.emailButton.hidden = NO;
                        [self.favoritePhotosIndexPaths insertObject:[NSNumber numberWithBool:YES] atIndex:indexPath.row];
                        break;
                    }
                    else
                    {
                        [cell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
+                       cell.tweetButton.hidden = YES;
+                       cell.emailButton.hidden = YES;
                    }
                }
                //cell.photo.layer.masksToBounds = YES;
@@ -172,7 +180,6 @@
     {
         return [NSString stringWithFormat:@"https://api.instagram.com/v1/tags/%@/media/recent?client_id=%@", search, INSTAGRAM_CLIENT_ID];
     }
-
 }
 
 - (void)getInstagramDataFromApiUrl: (NSURL *)url
@@ -216,42 +223,6 @@
              NSLog(@"Instagram data fail");
          }
      }];
-}
-
-- (void)setSelectedImageAsFavorite: (PhotosTableViewCell *)selectedCell tappedButton:(UIButton *)tappedButton
-{
-    // Turn the button that was tapped into a point so that you can get the index of that point in the tableview.
-    CGPoint hitPoint = [tappedButton convertPoint:CGPointZero toView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
-
-    NSData *currentImageData = UIImagePNGRepresentation(selectedCell.favoriteButton.currentBackgroundImage);
-    NSData *emptyHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_empty"]);
-    //NSData *brokenHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_broken"]);
-    NSData *fullHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_full"]);
-
-    BOOL currentValue = [[self.favoritePhotosIndexPaths objectAtIndex:indexPath.row] boolValue];
-    BOOL updatedValue = !currentValue;
-    self.favoritePhotosIndexPaths[indexPath.row] = [NSNumber numberWithBool:updatedValue];
-
-    if ([currentImageData isEqual:emptyHeartImageData])
-    {
-        [UIView animateWithDuration:0.3 animations:^{
-            [selectedCell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
-        }];
-        Photo *photo = [self.photos objectAtIndex:indexPath.row];
-
-        [self.favoritePhotosNames addObject:[NSString stringWithFormat:@"%@.png", photo.photoId]];
-        [self savePhoto:photo];
-    }
-    else if ([currentImageData isEqual:fullHeartImageData])
-    {
-        [UIView animateWithDuration:0.3 animations:^{
-            [selectedCell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
-        }];
-
-        Photo *photo = [self.photos objectAtIndex:indexPath.row];
-        [self deletePhoto:photo];
-    }
 }
 
 - (NSURL *)documentsDirectory
@@ -302,6 +273,62 @@
     NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
     self.favoritePhotosNames = [NSMutableArray arrayWithContentsOfURL:plist];
 }
+
+#pragma mark - PhotosTableViewCell Delegate Methods
+
+- (void)setSelectedImageAsFavorite: (PhotosTableViewCell *)selectedCell tappedButton:(UIButton *)tappedButton
+{
+    // Turn the button that was tapped into a point so that you can get the index of that point in the tableview.
+    CGPoint hitPoint = [tappedButton convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:hitPoint];
+
+    NSData *currentImageData = UIImagePNGRepresentation(selectedCell.favoriteButton.currentBackgroundImage);
+    NSData *emptyHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_empty"]);
+    //NSData *brokenHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_broken"]);
+    NSData *fullHeartImageData = UIImagePNGRepresentation([UIImage imageNamed:@"heart_full"]);
+
+    BOOL currentValue = [[self.favoritePhotosIndexPaths objectAtIndex:indexPath.row] boolValue];
+    BOOL updatedValue = !currentValue;
+    self.favoritePhotosIndexPaths[indexPath.row] = [NSNumber numberWithBool:updatedValue];
+
+    if ([currentImageData isEqual:emptyHeartImageData])
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            [selectedCell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_full"] forState:UIControlStateNormal];
+            // Turn on social buttons
+            selectedCell.tweetButton.hidden = NO;
+            selectedCell.emailButton.hidden = NO;
+        }];
+        Photo *photo = [self.photos objectAtIndex:indexPath.row];
+
+        [self.favoritePhotosNames addObject:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+        [self savePhoto:photo];
+    }
+    else if ([currentImageData isEqual:fullHeartImageData])
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            [selectedCell.favoriteButton setBackgroundImage:[UIImage imageNamed:@"heart_empty"] forState:UIControlStateNormal];
+            // Turn off Social Buttons
+            selectedCell.tweetButton.hidden = YES;
+            selectedCell.emailButton.hidden = YES;
+        }];
+
+        Photo *photo = [self.photos objectAtIndex:indexPath.row];
+        [self deletePhoto:photo];
+    }
+}
+
+- (void)tweetFavorite
+{
+
+}
+
+- (void)emailFavorite
+{
+
+}
+
+#pragma mark - delloc
 
 - (void)viewDidDisappear:(BOOL)animated
 {

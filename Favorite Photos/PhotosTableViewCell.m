@@ -32,5 +32,14 @@
     - (NSArray *)indexPathsForRowsInRect:(CGRect)rect;*/
 }
 
+- (IBAction)onTweetButtonTapped:(id)sender
+{
+    NSLog(@"Tweet");
+}
+
+- (IBAction)onEmailButtonTapped:(id)sender
+{
+    NSLog(@"Email");
+}
 
 @end

@@ -11,6 +11,7 @@
 #import "Photo.h"
 #import "MapViewController.h"
 #import "RootPhotosViewController.h"
+#import <Social/Social.h>
 
 @interface FavoritesViewController () <PhotoTableViewCellDelegate, RootPhotosViewControllerDelegate, UIAlertViewDelegate>
 

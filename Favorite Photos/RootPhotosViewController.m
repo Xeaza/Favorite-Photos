@@ -6,11 +6,7 @@
 //  Copyright (c) 2014 Taylor Wright-Sanson. All rights reserved.
 //
 
-#define INSTAGRAM_AUTH_URL @"https://api.instagram.com/oauth/authorize/"
-#define INSTAGRAM_API_URl @"https://api.instagram.com/v1/users/"
 #define INSTAGRAM_CLIENT_ID @"1ba6fd84eae843c086fd47bf99aaedc8"
-#define INSTAGRAM_CLIENT_SECRET @"afa28b17d2104731ac4689a7393de53c”
-#define INSTAGRAM_REDIRECT_URI @"localhost:// registered in Instagram."
 
 #import "RootPhotosViewController.h"
 #import "PhotosTableViewCell.h"
@@ -348,6 +344,11 @@
 {
     [self.delegate amIComingBackFromSearchPhotosViewController:YES];
     self.delegate = nil;
+}
+
+-(void)didReceiveMemoryWarning
+{
+    NSLog(@"Uhoh, something to delloc here... ");
 }
 
 

@@ -36,7 +36,6 @@
     {
         [self initlizeArraysAndLoadFavorites];
     }
-    //NSLog(self.didComeFromSearchingPhotosView ? @"Yes" : @"No");
 }
 
 - (void)initlizeArraysAndLoadFavorites
@@ -106,6 +105,7 @@
     }
 
     cell.photo.image = [UIImage imageWithData:photoData];
+    cell.instagramPost = photo;
     cell.delegate = self;
 
     return cell;
@@ -273,7 +273,6 @@
     [alertView show];
 }
 
-#pragma mark - Social
 
 #pragma mark - Social
 

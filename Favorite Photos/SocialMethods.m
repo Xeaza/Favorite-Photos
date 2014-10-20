@@ -42,7 +42,6 @@
         mailer.mailComposeDelegate = presentingViewController;
         [mailer setSubject:@"This is my favorite photo of all time!"];
         NSData *imageData = [NSData dataWithContentsOfURL:selectedCell.instagramPost.photoUrl];
-        NSLog(@"%@", selectedCell.instagramPost.photoUrl);
         [mailer addAttachmentData:imageData mimeType:@"image/jpeg" fileName:@"MyFile.jpeg"];
 
         [presentingViewController presentViewController:mailer animated:YES completion:nil];

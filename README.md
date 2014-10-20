@@ -1,8 +1,7 @@
 ## Third Weekend Code Challenge - 10/16/2014
 
-
-![alt text](https://raw.githubusercontent.com/Xeaza/Favorite-Photos/master/Favorite%20Photos/iOS%20Simulator%20Screen%20Shot%20Oct%2019,%202014,%2010.23.49%20PM.png =100x)
-![ald text](https://raw.githubusercontent.com/Xeaza/Favorite-Photos/master/Favorite%20Photos/iOS%20Simulator%20Screen%20Shot%20Oct%2019,%202014,%2010.26.26%20PM.png =100x)
+<img src="https://raw.githubusercontent.com/Xeaza/Favorite-Photos/master/Favorite%20Photos/iOS%20Simulator%20Screen%20Shot%20Oct%2019,%202014,%2010.23.49%20PM.png" style="width: 100px;"/>
+<img src="https://raw.githubusercontent.com/Xeaza/Favorite-Photos/master/Favorite%20Photos/iOS%20Simulator%20Screen%20Shot%20Oct%2019,%202014,%2010.26.26%20PM.png" style="width: 100px;"/>
 
 - This app lets users search instagram by tag or by user id. HA good luck knowing you're user id... No OAuth requred thouh. 
 

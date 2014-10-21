@@ -17,6 +17,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithContentsOfURL:plist]];
+
     return YES;
 }
 
@@ -40,6 +43,16 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] writeToFile:[[[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"] absoluteString] atomically:YES];
+}
+
+#pragma mark - Private stuff
+
+- (NSURL *)documentsDirectory
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *files = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    return  files.firstObject;
 }
 
 @end

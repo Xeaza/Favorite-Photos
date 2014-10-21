@@ -237,9 +237,9 @@
 - (void)deletePhoto: (Photo *)photo
 {
     // Remove the photo being unfavorited from the plist of Photo names
-    [self.favoritePhotosNames removeObject:[NSString stringWithFormat:@"%@.png", photo.photoId]];
-    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
-    [self.favoritePhotosNames writeToURL:plist atomically:YES];
+    //[self.favoritePhotosNames removeObject:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+    //NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
+    //[self.favoritePhotosNames writeToURL:plist atomically:YES];
 
     // Remove the photo with the name photo.photoId.png from the file system
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,   NSUserDomainMask, YES);
@@ -250,13 +250,14 @@
     // Remove image object from user defaults
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults removeObjectForKey:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+    [userDefaults synchronize];
 }
 
 - (void)savePhoto: (Photo *)photo
 {
-    // Create a plist that holds the array of self.favoritePhotoNames
-    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
-    [self.favoritePhotosNames writeToURL:plist atomically:YES];
+//    // Create a plist that holds the array of self.favoritePhotoNames
+//    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
+//    [self.favoritePhotosNames writeToURL:plist atomically:YES];
 
     // Encode the photo object as NSData so it can be added to userDefaults
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

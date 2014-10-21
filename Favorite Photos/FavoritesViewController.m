@@ -25,7 +25,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    //NSLog(@"%@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
    // NSLog(@"Documents Directory: %@", [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
     [self initlizeArraysAndLoadFavorites];
 }
@@ -118,38 +118,22 @@
 
 #pragma mark - NSUserDefaults
 
-- (NSURL *)documentsDirectory
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *files = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
-    return  files.firstObject;
-}
-
 - (void)load
 {
-    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
-    self.favoritePhotosNames = [NSMutableArray arrayWithContentsOfURL:plist];
     self.favoritePhotos = [NSMutableArray array];
-    for (NSString *imageUrlString in self.favoritePhotosNames)
+    self.favoritePhotosNames = [NSMutableArray array];
+    for (NSString* photoName in [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys])
     {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSData *data = [defaults objectForKey:imageUrlString];
-        Photo *photo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        if (data)
+        if ([photoName rangeOfString:@".png"].location != NSNotFound)
         {
-            [self.favoritePhotos addObject:photo];
+            [self.favoritePhotosNames addObject:photoName];
+            Photo *photo = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:photoName]];
+            if (photo)
+            {
+                [self.favoritePhotos addObject:photo];
+            }
         }
     }
-}
-
-- (UIImage *)loadImage
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSData *data = [defaults objectForKey:@"PersistenDataKey"];
-    Photo *photo = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-
-    NSData *pngData = [NSData dataWithContentsOfFile:[self documentsPathForFileName:[NSString stringWithFormat:@"%@.png", photo.photoId]]];
-    return [UIImage imageWithData:pngData];
 }
 
 - (NSString *)documentsPathForFileName:(NSString *)name
@@ -176,7 +160,7 @@
     if ([currentImageData isEqual:fullHeartImageData])
     {
         Photo *photo = [self.favoritePhotos objectAtIndex:indexPath.row];
-        [self deletePhoto:photo];
+        //[self deletePhoto:photo];
         [self.favoritePhotos removeObjectAtIndex:indexPath.row];
         [self.tableView performSelector:@selector(reloadData) withObject:indexPath afterDelay:0.3];
 
@@ -193,24 +177,24 @@
     [self.tableView endUpdates];
 }
 
-- (void)deletePhoto: (Photo *)photo
-{
-    // Remove the photo being unfavorited from the plist of Photo names
-    [self.favoritePhotosNames removeObject:[NSString stringWithFormat:@"%@.png", photo.photoId]];
-    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
-    [self.favoritePhotosNames writeToURL:plist atomically:YES];
-
-    // Remove the photo with the name photo.photoId.png from the file system
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,   NSUserDomainMask, YES);
-    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtPath:[documentsDirectoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", photo.photoId]] error:nil];
-
-    // Remove image object from user defaults
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults removeObjectForKey:[NSString stringWithFormat:@"%@.png", photo.photoId]];
-    [userDefaults synchronize];
-}
+//- (void)deletePhoto: (Photo *)photo
+//{
+//    // Remove the photo being unfavorited from the plist of Photo names
+//    [self.favoritePhotosNames removeObject:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+//    NSURL *plist = [[self documentsDirectory] URLByAppendingPathComponent:@"favorites.plist"];
+//    [self.favoritePhotosNames writeToURL:plist atomically:YES];
+//
+//    // Remove the photo with the name photo.photoId.png from the file system
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,   NSUserDomainMask, YES);
+//    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+//    NSFileManager *fileManager = [NSFileManager defaultManager];
+//    [fileManager removeItemAtPath:[documentsDirectoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png", photo.photoId]] error:nil];
+//
+//    // Remove image object from user defaults
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    [userDefaults removeObjectForKey:[NSString stringWithFormat:@"%@.png", photo.photoId]];
+//    [userDefaults synchronize];
+//}
 
 #pragma mark - Segue
 
